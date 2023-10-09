@@ -850,13 +850,18 @@ void
 APEX_cpu_run(APEX_CPU *cpu, int simulate)
 {
     char user_prompt_val;
-
+    int counter =0;
     if(simulate>0)
     {
         cpu->single_step = FALSE ;
+         
     }
     while (TRUE)
     {
+        if(counter++ == simulate)
+        {
+            break;
+        }
         if (ENABLE_DEBUG_MESSAGES)
         {
             printf("--------------------------------------------\n");
@@ -877,9 +882,22 @@ APEX_cpu_run(APEX_CPU *cpu, int simulate)
         APEX_fetch(cpu);
 
         print_reg_file(cpu);
-        p_memory(cpu);
+        
     
+        int count = 0;
+    
+        printf("----------\n%s\n----------\n", "Data Memory:");
+    
+        for (int i = 0; i < DATA_MEMORY_SIZE; i++)
+         {
+            if (cpu->data_memory[i] != 0) {
+            printf("MEM[%d]: %d ", i, cpu->data_memory[i]);
+            count++;
+            }
+          }
 
+
+    printf(" \n");
 
 
 
@@ -903,26 +921,7 @@ APEX_cpu_run(APEX_CPU *cpu, int simulate)
         cpu->clock++;
     }
 }
-void p_memory(APEX_CPU* cpu) {
-        int count = 0;
-    
-        printf("----------\n%s\n----------\n", "Data Memory:");
-    
-        for (int i = 0; i < DATA_MEMORY_SIZE; i++)
-         {
-            if (cpu->data_memory[i] != 0) {
-            printf("MEM[%d]: %d ", i, cpu->data_memory[i]);
-            count++;
-            }
-          }
 
-        if (count == 0) 
-        {
-            printf("Data Memory is empty.");
-        }
-
-    printf(" \n");
-    }
 
 /*
  * This function deallocates APEX CPU.

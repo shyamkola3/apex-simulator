@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "apex_cpu.h"
 
 int get_num_from_string(const char *buffer) {
