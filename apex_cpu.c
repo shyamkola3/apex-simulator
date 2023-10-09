@@ -886,7 +886,7 @@ APEX_cpu_run(APEX_CPU *cpu, int simulate)
     
         int count = 0;
     
-        printf("----------\n%s\n----------\n", "Data Memory:");
+       
     
         for (int i = 0; i < DATA_MEMORY_SIZE; i++)
          {

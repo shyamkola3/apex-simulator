@@ -300,7 +300,77 @@ create_APEX_instruction(APEX_Instruction *ins, char *buffer)
     }
     /* Fill in rest of the instructions accordingly */
 }
+void forward_data_to_decode(APEX_CPU *cpu) {
+  if (!(cpu->opcode == 0x8 || cpu->opcode == 0x9 || cpu->opcode == 0xf
+      || ->opcode == 0x10 || stage->opcode == 0x11 || stage->opcode == 0x12 || stage->opcode == 0xa
+      || stage->opcode == 0xb || stage->opcode == 0xc)) {
+    switch (cpu->decode.opcode) {
+      case OPCODE_ADD:
+      case OPCODE_SUB:
+      case OPCODE_MUL:
+      case OPCODE_AND:
+      case OPCODE_OR:
+      case OPCODE_EXOR:
+      case OPCODE_LDR:
+      case OPCODE_CMP:
+      case OPCODE_MOVC: {
+        if (stage->rd == cpu->decode.rs1) {
+          cpu->decode.rs1_value = stage->result_buffer;
+          cpu->forwarded[cpu->decode.rs1] = 1;
+          cpu->status[cpu->decode.rs1] = 1;
+        }
 
+        if (stage->rd == cpu->decode.rs2) {
+          cpu->decode.rs2_value = stage->result_buffer;
+          cpu->forwarded[cpu->decode.rs2] = 1;
+          cpu->status[cpu->decode.rs2] = 1;
+        }
+        break;
+      }
+
+      case OPCODE_ADDL:
+      case OPCODE_SUBL:
+      case OPCODE_LOAD: {
+        if (stage->rd == cpu->decode.rs1) {
+          cpu->decode.rs1_value = stage->result_buffer;
+          cpu->forwarded[cpu->decode.rs1] = 1;
+          cpu->status[cpu->decode.rs1] = 1;
+        }
+        break;
+      }
+
+      case OPCODE_STORE: {
+        if (stage->rd == cpu->decode.rs2) {
+          cpu->decode.rs2_value = stage->result_buffer;
+          cpu->forwarded[cpu->decode.rs2] = 1;
+          cpu->status[cpu->decode.rs2] = 1;
+        }
+        break;
+      }
+
+      case OPCODE_STR: {
+        if (stage->rd == cpu->decode.rs3) {
+          cpu->decode.rs3_value = stage->result_buffer;
+          cpu->forwarded[cpu->decode.rs3] = 1;
+          cpu->status[cpu->decode.rs3] = 1;
+        }
+
+        if (stage->rd == cpu->decode.rs2) {
+          cpu->decode.rs2_value = stage->result_buffer;
+          cpu->forwarded[cpu->decode.rs2] = 1;
+          cpu->status[cpu->decode.rs2] = 1;
+        }
+
+        if (stage->rd == cpu->decode.rs1) {
+          cpu->decode.rs1_value = stage->result_buffer;
+          cpu->forwarded[cpu->decode.rs1] = 1;
+          cpu->status[cpu->decode.rs1] = 1;
+        }
+        break;
+      }
+    }
+  }
+}
 /*
  * This function is related to parsing input file
  *
