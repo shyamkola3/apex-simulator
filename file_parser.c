@@ -161,11 +161,12 @@ set_opcode_str(const char *opcode_str)
 
     if (strcmp(opcode_str, "CMP") == 0)
     {
-        return OPCODE_BNZ;
+        return OPCODE_CMP;
     }
 
     if (strcmp(opcode_str, "NOP") == 0)
     {
+        
         return OPCODE_NOP;
     }
 
@@ -227,9 +228,7 @@ create_APEX_instruction(APEX_Instruction *ins, char *buffer)
     switch (ins->opcode)
     {
         case OPCODE_ADD:
-        case OPCODE_ADDL:
         case OPCODE_SUB:
-        case OPCODE_SUBL:
         case OPCODE_MUL:
         case OPCODE_DIV:
         case OPCODE_AND:
@@ -248,7 +247,8 @@ create_APEX_instruction(APEX_Instruction *ins, char *buffer)
             ins->imm = get_num_from_string(tokens[1]);
             break;
         }
-
+        case OPCODE_ADDL:
+        case OPCODE_SUBL:
         case OPCODE_LOAD:
         case OPCODE_LOADP:
         {
@@ -294,7 +294,7 @@ create_APEX_instruction(APEX_Instruction *ins, char *buffer)
         {
             ins->rd = get_num_from_string(tokens[0]);
             ins->rs1 = get_num_from_string(tokens[1]);
-            ins->imm = get_num_from_string(tokens[1]);
+            ins->imm = get_num_from_string(tokens[2]);
             break;
         }
     }

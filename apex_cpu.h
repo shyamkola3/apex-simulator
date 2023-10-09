@@ -31,10 +31,12 @@ typedef struct CPU_Stage
     int rs1;
     int rs2;
     int rd;
+    int valid;
     int imm;
     int rs1_value;
     int rs2_value;
     int result_buffer;
+    int temp;
     int memory_address;
     int has_insn;
 } CPU_Stage;
@@ -46,11 +48,14 @@ typedef struct APEX_CPU
     int clock;                     /* Clock cycles elapsed */
     int insn_completed;            /* Instructions retired */
     int regs[REG_FILE_SIZE];       /* Integer register file */
+    int freeregs[REG_FILE_SIZE];
     int code_memory_size;          /* Number of instruction in the input file */
     APEX_Instruction *code_memory; /* Code Memory */
     int data_memory[DATA_MEMORY_SIZE]; /* Data Memory */
     int single_step;               /* Wait for user input after every cycle */
-    int zero_flag;                 /* {TRUE, FALSE} Used by BZ and BNZ to branch */
+    int zero_flag; 
+    int pos_flag;
+    int neg_flag;                /* {TRUE, FALSE} Used by BZ and BNZ to branch */
     int fetch_from_next_cycle;
 
     /* Pipeline stages */
@@ -63,7 +68,7 @@ typedef struct APEX_CPU
 
 APEX_Instruction *create_code_memory(const char *filename, int *size);
 APEX_CPU *APEX_cpu_init(const char *filename);
-void APEX_cpu_run(APEX_CPU *cpu);
+void APEX_cpu_run(APEX_CPU *cpu, int a);
 void APEX_cpu_stop(APEX_CPU *cpu);
-int checkflag(CPU_Stage *cpu);
+void p_memory(APEX_CPU *cpu);
 #endif

@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "random": "c",
+    "queue": "c",
+    "stack": "c"
+  },
+  "C_Cpp.intelliSenseCacheSize": 0,
+  "C_Cpp.intelliSenseMemoryLimit": 256,
+  "terminal.integrated.enablePersistentSessions": false
+}
