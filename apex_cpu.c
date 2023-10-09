@@ -883,8 +883,7 @@ APEX_cpu_run(APEX_CPU *cpu, int simulate)
 
         print_reg_file(cpu);
         
-    
-        int count = 0;
+
     
        
     
@@ -892,7 +891,6 @@ APEX_cpu_run(APEX_CPU *cpu, int simulate)
          {
             if (cpu->data_memory[i] != 0) {
             printf("MEM[%d]: %d ", i, cpu->data_memory[i]);
-            count++;
             }
           }
 
